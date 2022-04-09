@@ -27,7 +27,7 @@ type Produto{
 }
 
 type Usuario{
-    id: ID
+    id: Int
     nome: String!
     email: String!
     idade: Int
@@ -42,6 +42,7 @@ type Query {
     produtoEmDestaque: Produto
     numerosMegaSena: [Int!]!
     usuarios: [Usuario]
+    usuario(id: Int): Usuario
 }
 `
 
@@ -94,8 +95,15 @@ const resolvers = {
         },
         usuarios() {
             return usuarios
+        },
+        usuario(_, { id }) {
+            const sel = usuarios
+                .filter(u => u.id === id)
+            return sel ? sel[0] : null
         }
+
     }
+
 }
 
 const server = new ApolloServer({
